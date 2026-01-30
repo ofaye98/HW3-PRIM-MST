@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 from mst import Graph
 from sklearn.metrics import pairwise_distances
+from collections import deque
 
 
 def check_mst(adj_mat: np.ndarray, 
@@ -35,6 +36,35 @@ def check_mst(adj_mat: np.ndarray,
             total += mst[i, j]
     assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight'
 
+    # additional assertions added below:
+
+    # how many edges should an mst have?
+    n = adj_mat.shape[0] # number of nodes
+    mst_triu = np.triu(mst, k=1) # extract upper triangle of mst (avoid counting edges twice and ignore diagonal)
+    num_edges =  np.count_nonzero(mst_triu) # counts non-zero entries (actual edges) in mst upper triangle
+    assert num_edges == n - 1, f'mst should have {n-1} edges, we found {num_edges}' # spanning tree on n nodes has n - 1 edges
+
+    # are msts always connected?
+    visited = set([0]) # use to keep track of nodes we've reached so far
+    queue = deque([0]) # create FIFO queue with starting node 0
+
+    while queue:
+        current_node = queue.popleft() # remove and return oldest node in the queue
+        # loop over every node neighbor that's connected to the current_node by an mst edge
+        for neighbor in np.where(mst[current_node] > 0)[0]:
+            if neighbor not in visited: # if we haven't already reached this neighbor
+                visited.add(neighbor) # mark it as now reached
+                queue.append(neighbor) # add to queue so we can look at its own neighbors later
+    assert len(visited) == n, 'mst not connected' # if connected, we shouldve been able to visit all nodes (n)
+
+    # making sure edges in mst exist in the original adj_mat
+    mst_edges = mst > 0 # sets to True whenever mst has an edge
+    # index into adj_mat using the mst edge mask
+    assert np.all(adj_mat[mst_edges] > 0), 'mst contains edge that is not present in adj_mat' 
+
+    # making sure matrices are symmetric
+    assert np.allclose(adj_mat, adj_mat.T), 'adj_mat not symmetric' # use transposed matrix to check symmetry
+    assert np.allclose(mst, mst.T), 'mst not symmetric' 
 
 def test_mst_small():
     """
