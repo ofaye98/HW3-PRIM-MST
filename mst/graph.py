@@ -1,6 +1,6 @@
 import numpy as np
 import heapq
-from typing import Union
+from typing import Union # lets us type-hint that adj_mat can be either a NumPy array or a string path
 
 class Graph:
 
@@ -42,3 +42,43 @@ class Graph:
 
         """
         self.mst = None
+        adj = self.adj_mat # convenience var so we dont have to type self.adj_mat every time
+        n = adj.shape[0] # number of nodes = number of rows (or cols) 
+
+        mst_mat = np.zeros((n, n), dtype=float) # placeholder matrix with same dimensions as original adj mat
+        in_mst = [False] * n # track which nodes are already in mst matrix
+
+        start = 0 # start at node 0 for now
+        in_mst[start] # mark the start node as included in the mst matrix [True, False, False, False] 
+        num_in_mst = 1 # track how many nodes are in the mst so far
+
+        heap = [] # list to store candidate edges in a min-heap
+
+        # loop through all edges leaving the start node
+        for target_node in range(n): 
+            weight = adj[start, target_node] # weight from start to current target node
+            if target_node!= start and weight!= 0: # if weight isn't 0, the edge exists
+                heapq.heappush(heap, (weight, start, target_node)) # push valid edges into the heap
+
+        # keep adding the lowest weighted edge
+        while num_in_mst < n: # run until mst contains all n nodes
+            weight, source_node, target_node = heapq.heappop(heap) # pop edge with lowest weight
+
+            # skip edges that don't add a new node
+            if in_mst[target_node]: # if target node is already in the mst, skip it because it wont expand mst
+                continue
+
+            in_mst[target_node] = True # mark this node as in the mst matrix
+            num_in_mst += 1
+            # add this weight to our mst matrix
+            mst_mat[source_node, target_node] = weight
+            mst_mat[target_node, source_node] = weight # store symmetrically bc graph is undirected
+
+            # for the newly added node, look at all its edges to the next node
+            for next_node in range(n):
+                weight2 = adj[target_node, next_node]
+                # only push edges if its not in mst yet and isn't a self loop and has a weight
+                if not in_mst[next_node] and next_node != target_node and weight2 != 0:
+                    heapq.heappush(heap, (weight2, target_node, next_node))
+
+        self.mst = mst_mat
