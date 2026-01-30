@@ -49,7 +49,7 @@ class Graph:
         in_mst = [False] * n # track which nodes are already in mst matrix
 
         start = 0 # start at node 0 for now
-        in_mst[start] # mark the start node as included in the mst matrix [True, False, False, False] 
+        in_mst[start] = True # mark the start node as included in the mst matrix [True, False, False, False] 
         num_in_mst = 1 # track how many nodes are in the mst so far
 
         heap = [] # list to store candidate edges in a min-heap
