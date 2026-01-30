@@ -2,6 +2,22 @@
 
 In this assignment, you'll implement Prim's algorithm, a non-trivial greedy algorithm used to construct minimum spanning trees. 
 
+## Description of Methods
+I referenced these videos:
+* https://www.youtube.com/watch?v=cplfcGZmX7I - for general understanding of concept
+* https://www.youtube.com/watch?v=EHRqQBlZAtU - had code using heap
+
+For construct_mst I reference these websites:
+* https://www.geeksforgeeks.org/dsa/prims-minimum-spanning-tree-mst-greedy-algo-5/ - helpful figure at the beginning
+* https://bradfieldcs.com/algos/graphs/prims-spanning-tree-algorithm/ - used their implementation of heapq
+* https://youcademy.org/prims-mst-algorithm/ - also used this for their implementation of heapq
+
+Used chatgpt's suggestion on how to store weights in mst matrix symmetrically and for help with debugging.
+
+For check_mst I referenced:
+* AI overview for figuring out how many edges an MST for a connected graph should have
+* HW2 for checking connected graphs
+
 ## Tasks
 
 ### Coding
