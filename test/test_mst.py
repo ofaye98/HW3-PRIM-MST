@@ -48,6 +48,7 @@ def check_mst(adj_mat: np.ndarray,
     visited = set([0]) # use to keep track of nodes we've reached so far
     queue = deque([0]) # create FIFO queue with starting node 0
 
+    # use bfs
     while queue:
         current_node = queue.popleft() # remove and return oldest node in the queue
         # loop over every node neighbor that's connected to the current_node by an mst edge
@@ -95,10 +96,49 @@ def test_mst_single_cell_data():
     check_mst(g.adj_mat, g.mst, 57.263561605571695)
 
 
-def test_mst_student():
+def test_mst_student_1():
     """
     
-    TODO: Write at least one unit test for MST construction.
+    TODO: test using 5 node graph loaded directly as a 2D np array
     
     """
-    pass
+    adj = np.array([
+        [0, 4, 0, 6, 0],
+        [4, 0, 2, 0, 7],
+        [0, 2, 0, 3, 0],
+        [6, 0, 3, 0, 1],
+        [0, 7, 0, 1, 0],
+    ], dtype=float)
+
+    g = Graph(adj)
+    g.construct_mst()
+
+    # one valid mst:
+    # (3,4) = 1
+    # (1,2) = 2
+    # (2,3) = 3
+    # (0,1) = 4
+    # expected_weight = 1 + 2 + 3 + 4 = 10
+    check_mst(g.adj_mat, g.mst, expected_weight=10.0)
+
+
+def test_mst_student_2():
+    """
+    
+    TODO: test on a very small graph (trangle graph - just 3 nodes)
+    
+    """
+    adj = np.array([
+        [0, 1, 2],
+        [1, 0, 1],
+        [2, 1, 0],
+    ], dtype=float)
+
+    g = Graph(adj)
+    g.construct_mst()
+
+    # only check mst properties and weight
+    # (0,1) = 1
+    # (1,2) = 1
+    # expected_weight = 2
+    check_mst(g.adj_mat, g.mst, expected_weight=2.0)
