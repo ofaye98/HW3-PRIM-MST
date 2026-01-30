@@ -3,7 +3,7 @@ requires = ["flit_core>=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "prim_mst"  # must be unique on PyPI if you ever publish
+name = "mst"  # must be unique on PyPI if you ever publish
 authors = [{ name = "Faye Orcales", email = "faye.orcales@ucsf.edu" }]
 readme = "README.md"
 license = { file = "LICENSE" }
