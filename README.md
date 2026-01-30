@@ -1,3 +1,5 @@
+[![tests](https://github.com/ofaye98/HW3-PRIM-MST/actions/workflows/tests.yml/badge.svg)](https://github.com/ofaye98/HW3-PRIM-MST/actions/workflows/tests.yml)
+
 # HW 3: Prim's algorithm
 
 In this assignment, you'll implement Prim's algorithm, a non-trivial greedy algorithm used to construct minimum spanning trees. 
@@ -17,6 +19,8 @@ Used chatgpt's suggestion on how to store weights in mst matrix symmetrically an
 For check_mst I referenced:
 * AI overview for figuring out how many edges an MST for a connected graph should have
 * HW2 for checking connected graphs
+
+For making package pip installable, I reference HW1 pyproject.toml
 
 ## Tasks
 
